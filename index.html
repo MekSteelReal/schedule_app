@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule - Sold Your Time</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+</head>
+<body>
+    <div id="login-screen" class="screen active">
+        <div class="login-container">
+            <img src="https://i.ibb.co/bF5g4hD/logo-schedule.png" alt="Logo Schedule" class="logo-login">
+            <h1>Bem-vindo ao Schedule</h1>
+            <p>Conectando profissionais e clientes.</p>
+            <div class="user-type-selector">
+                <button id="login-as-client" class="user-type-btn">Entrar como Contratante</button>
+                <button id="login-as-provider" class="user-type-btn">Entrar como Prestador</button>
+            </div>
+            <div class="login-form">
+                <input type="email" placeholder="Email" class="input-field">
+                <input type="password" placeholder="Senha" class="input-field">
+                <button class="btn-primary">Entrar</button>
+                <a href="#" class="form-link">Esqueceu a senha?</a>
+                <a href="#" class="form-link">Não tem uma conta? Cadastre-se</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-screen" class="screen">
+        <header>
+            <img src="https://i.ibb.co/bF5g4hD/logo-schedule.png" alt="Logo Schedule" class="logo-header">
+            <div class="user-info">
+                <span id="user-name"></span>
+                <img id="user-avatar" src="" alt="Avatar" class="avatar">
+            </div>
+        </header>
+
+        <main>
+            <div id="map-container">
+                <div id="map"></div>
+            </div>
+            <div id="list-container">
+                <div class="list-header">
+                    <h2 id="list-title">Vagas Próximas</h2>
+                    <button id="post-job-btn" class="btn-secondary">Criar Vaga</button>
+                </div>
+                <div id="job-list" class="scrollable">
+                    </div>
+            </div>
+        </main>
+
+        <footer>
+            <nav>
+                <button id="nav-feed" class="nav-btn active"><i class="icon">🔍</i><span>Buscar</span></button>
+                <button id="nav-jobs" class="nav-btn"><i class="icon">💼</i><span id="nav-jobs-text">Meus Serviços</span></button>
+                <button id="nav-schedule" class="nav-btn"><i class="icon">📅</i><span>Agenda</span></button>
+                <button id="nav-profile" class="nav-btn"><i class="icon">👤</i><span>Perfil</span></button>
+            </nav>
+        </footer>
+    </div>
+    
+    <div id="job-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modal-body" class="scrollable">
+                </div>
+        </div>
+    </div>
+    
+    <div id="create-job-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Criar Nova Vaga</h2>
+            <form id="create-job-form">
+                <input type="text" placeholder="Título da Vaga (ex: Encanador para reparo)" required>
+                <textarea placeholder="Descrição detalhada do serviço" rows="4" required></textarea>
+                <input type="text" placeholder="Localização (Endereço)" required>
+                <input type="number" placeholder="Valor oferecido por hora (R$)" required>
+                <button type="submit" class="btn-primary">Publicar Vaga</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Meu Perfil</h2>
+            <div id="profile-body" class="scrollable">
+                 </div>
+        </div>
+    </div>
+
+    <div id="schedule-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Minha Agenda</h2>
+            <div class="calendar">
+                <div class="calendar-header">
+                    <span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span>
+                </div>
+                <div class="calendar-body">
+                    <div class="day available">1</div>
+                    <div class="day">2</div>
+                    <div class="day reserved">3 <small>14h - Limpeza</small></div>
+                    <div class="day">4</div>
+                    <div class="day available">5</div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="rating-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="rating-title">Avaliar Serviço</h2>
+            <form id="rating-form">
+                <p id="rating-description"></p>
+                <div class="star-rating">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                </div>
+                <label>Como você avalia a cordialidade e simpatia?</label>
+                <div class="star-rating">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                </div>
+                <label>O serviço oferecido atendeu às suas expectativas?</label>
+                <div class="star-rating">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                </div>
+                <textarea placeholder="Deixe um comentário adicional..."></textarea>
+                <button type="submit" class="btn-primary">Enviar Avaliação</button>
+            </form>
+        </div>
+    </div>
+
+    <button id="emergency-btn" class="emergency-btn">🚨 EMERGÊNCIA</button>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="script.js"></script>
+</body>
+</html>
